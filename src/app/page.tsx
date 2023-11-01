@@ -13,9 +13,7 @@ const HomePage = () => {
 
   if (session) {
     return (
-      <>
-        AQUI VA EL CODIGO NORMAL
-      </>
+      <div className="sm:ml-64">AQUI VA EL CODIGO</div>
     );
   }
 
