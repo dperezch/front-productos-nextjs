@@ -3,7 +3,7 @@
 import Loading from "@/components/Loading";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const LoginPage = () => {
   const [errors, setErrors] = useState<string[]>([]);
@@ -45,7 +45,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <div>
       {imageLoaded ? (
         <div className={`${session? "sm:ml-64" : ""} flex justify-center h-screen bg-[url('https://picsum.photos/1920/1080')]`}>
           <div className="mt-24 h-1/2 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
@@ -114,7 +114,7 @@ const LoginPage = () => {
       ) : (
         <Loading />
       )}
-    </Suspense>
+    </div>
   );
 };
 export default LoginPage;
