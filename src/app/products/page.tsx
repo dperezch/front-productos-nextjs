@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import Filtrador from "@/components/productos/Filtrador";
+import Lista from "@/components/productos/Lista";
 import { useSession } from "next-auth/react";
 
 const Products = () => {
@@ -14,7 +14,7 @@ const Products = () => {
   return (
     <>
       <div className="mt-10 ">
-        <Filtrador/>
+        <Lista/>
       </div>
     </>
   );
