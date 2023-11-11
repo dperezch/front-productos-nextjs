@@ -84,11 +84,6 @@ const Lista = () => {
     console.log(`estoy apretando la tabla ${sortKey}`);
     const sortedArray = [...(arrayOrdenado.length > 0 ? arrayOrdenado : data)];
 
-    /* if (sortKey === "nombre") {
-      sortedArray.sort((a, b) => a[sortKey].localeCompare(b[sortKey]));
-    } else if (sortKey === "cantidad") {
-      sortedArray.sort((a, b) => a[sortKey] - b[sortKey]);
-    } */
     switch (sortKey) {
       case "nombre":
         sortedArray.sort((a, b) => a[sortKey].localeCompare(b[sortKey]));
@@ -179,7 +174,7 @@ const Lista = () => {
 
   return (
     <div>
-      <div className="sm:ml-64 p-5">
+      <div className=" px-5">
         <form>
           <div className="flex ">
             <select
@@ -212,7 +207,7 @@ const Lista = () => {
       </div>
 
       {isLoading ? (
-        <div className="sm:ml-64">
+        <div className="">
           <div className="ml-8 mt-8  flex flex-row items-center">
             <div role="status">
               <svg
@@ -237,8 +232,8 @@ const Lista = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-10 ">
-          <div className="sm:ml-64 h-screen dark:bg-gray-800 dark:text-gray-400">
+        <div className="mt-3 ">
+          <div className=" h-screen dark:bg-gray-800 dark:text-gray-400">
             <div className="p-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
