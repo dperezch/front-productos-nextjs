@@ -29,3 +29,15 @@ interface Producto {
     id: number;
     nombre: string;
   }
+
+  interface PendingProduct{
+    sku: number;
+    nombre: string;
+    cantidad: number;
+    precio_venta: number;
+    precio_compra: number;
+    fecha_vencimiento: Date | null;
+    marca: string | null;
+    proveedor: string | null;
+    categoria: string | null;
+  }
