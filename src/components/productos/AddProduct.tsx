@@ -15,7 +15,6 @@ import { useState } from "react";
 const AddProduct = () => {
   const { data: session, status } = useSession();
   const [error, setError] = useState<any>();
-  const [product, setproduct] = useState<PendingProduct>();
   const { data: dataMarcas, error: errorMarcas } = useFetchDatos("/marcas");
   const { data: dataCategorias, error: errorCategorias } =
     useFetchDatos("/categorias");
@@ -59,7 +58,7 @@ const AddProduct = () => {
   const enviarProducto = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const productoPendiente = {
-      sku: parseInt(sku),
+      sku: sku,
       nombre: nombre,
       cantidad: parseInt(cantidad),
       precio_venta: parseInt(precio_venta),
@@ -70,30 +69,31 @@ const AddProduct = () => {
       categoria: categoria === "" ? null : categoria,
     };
 
-    async function fetchData(){
-        try {
-            const res = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/productos`,
-              {
-                method: "POST",
-                body: JSON.stringify(productoPendiente),
-                headers: {
-                  "Content-Type": "application/json",
-                  authorization: `Bearer ${session?.user?.token}`,
-                },
-              }
-            );
-            const newProducto = await res.json();
-            setproduct(newProducto);
-          } catch (e) {
-            setError(e);
-            console.log("ocurrio un error: ", error);   
+    async function fetchData() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/productos`,
+          {
+            method: "POST",
+            body: JSON.stringify(productoPendiente),
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${session?.user?.token}`,
+            },
           }
+        );
+        //const newProducto = await res.json();
+        console.log(res);
+      } catch (e) {
+        setError(e);
+        console.log("ocurrio un error: ", error);
+      }
     }
     if (status === "authenticated") {
-        fetchData();
-        console.log("nuevo producto desde database: ", product); 
-      }
+      fetchData();
+    }
+    setOpenModal(false);
+
   };
 
   return (
