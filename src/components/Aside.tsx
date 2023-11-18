@@ -2,16 +2,22 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { usePathname } from "next/navigation";
+import { BadgeContext } from "@/context/BadgeContext";
 
 const Aside = () => {
   const { data: session } = useSession();
 
   const [drawer, setDrawer] = useState(false);
 
+  const pathname = usePathname();
+
   const openDrawer = () => {
     setDrawer((current) => !current);
   };
+
+  const badge = useContext(BadgeContext) as any;
 
   return (
     <div className={`${session ? "" : "hidden"}`}>
@@ -85,10 +91,16 @@ const Aside = () => {
               </Link>
             </li>
 
-            <li>
+            <li
+              className={`${
+                pathname === "/dashboard"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}
+            >
               <Link
                 href="/dashboard"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
               >
                 <svg
                   className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -120,9 +132,15 @@ const Aside = () => {
                 <span className="flex-1 ml-3 whitespace-nowrap">Kanban</span>
               </Link>
             </li>
-            <li>
+            <li
+              className={`${
+                pathname === "/inbox"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}
+            >
               <Link
-                href="/"
+                href="/inbox"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -135,6 +153,7 @@ const Aside = () => {
                   <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Inbox</span>
+                <span className="ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-red-400 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger-700">{badge.badge}</span>
               </Link>
             </li>
             <li>
@@ -154,7 +173,13 @@ const Aside = () => {
                 <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
               </Link>
             </li>
-            <li>
+            <li
+              className={`${
+                pathname === "/products"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}
+            >
               <Link
                 href="/products"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"

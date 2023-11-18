@@ -10,9 +10,14 @@ import {
   Datepicker,
 } from "flowbite-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 
-const AddProduct = () => {
+interface AddProductProps {
+  addNewProduct: (newProduct: Producto) => void;
+  data: Producto[];
+}
+
+const AddProduct = ({ addNewProduct, data }: AddProductProps) => {
   const { data: session, status } = useSession();
   const [error, setError] = useState<any>();
   const { data: dataMarcas, error: errorMarcas } = useFetchDatos("/marcas");
@@ -27,12 +32,40 @@ const AddProduct = () => {
   const [precio_venta, setPrecio_venta] = useState<string>("");
   const [precio_compra, setPrecio_compra] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [inputDate, setInputDate] = useState<string | undefined>("")
   const [marca, setMarca] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
   const [proveedor, setProveedor] = useState<string>("");
 
+  const handleChangeSku = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("estoy presionando sku: ", event.target.value);
+
+    const element = data.find(
+      (element) => element.sku.toString() === event.target.value
+    );
+    if (element) {
+      setNombre(element.nombre);
+      //setCantidad(element.cantidad.toString());
+      setPrecio_venta(element.precio_venta.toString());
+      setPrecio_compra(element.precio_compra.toString());
+      setSelectedDate(element.fecha_vencimiento);
+      //setInputDate(element.fecha_vencimiento.toLocaleDateString);
+      setMarca(element.marca.nombre);
+      setCategoria(element.categoria.nombre);
+      setProveedor(element.proveedor.nombre);
+    }
+    
+    setSku(event.target.value);
+  };
+
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    if(date){
+      const pendingDate = date.toLocaleDateString()
+      console.log("pendingDate: ", pendingDate);
+      setInputDate(pendingDate)
+    }
+    
   };
 
   const handleSelectMarca = (e: string) => {
@@ -53,10 +86,20 @@ const AddProduct = () => {
   function onCloseModal() {
     setOpenModal(false);
     setSku("");
+    setNombre("");
+    setCantidad("");
+    setPrecio_venta("");
+    setPrecio_compra("");
+    setSelectedDate(null);
+    setInputDate("")
+    setMarca("");
+    setCategoria("");
+    setProveedor("");
   }
 
-  const enviarProducto = (event: React.FormEvent<HTMLFormElement>) => {
+  const enviarProducto = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const productoPendiente = {
       sku: sku,
       nombre: nombre,
@@ -69,31 +112,38 @@ const AddProduct = () => {
       categoria: categoria === "" ? null : categoria,
     };
 
-    async function fetchData() {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/productos`,
-          {
-            method: "POST",
-            body: JSON.stringify(productoPendiente),
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${session?.user?.token}`,
-            },
-          }
-        );
-        //const newProducto = await res.json();
-        console.log(res);
-      } catch (e) {
-        setError(e);
-        console.log("ocurrio un error: ", error);
-      }
-    }
-    if (status === "authenticated") {
-      fetchData();
-    }
-    setOpenModal(false);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/productos`,
+        {
+          method: "POST",
+          body: JSON.stringify(productoPendiente),
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.user?.token}`,
+          },
+        }
+      );
+      const nuevoProducto = await res.json();
+      console.log(nuevoProducto);
 
+      addNewProduct(nuevoProducto);
+    } catch (e) {
+      setError(e);
+      console.log("ocurrio un error: ", error);
+    }
+
+    setOpenModal(false);
+    setSku("");
+    setNombre("");
+    setCantidad("");
+    setPrecio_venta("");
+    setPrecio_compra("");
+    setSelectedDate(null);
+    setInputDate("")
+    setMarca("");
+    setCategoria("");
+    setProveedor("");
   };
 
   return (
@@ -115,7 +165,7 @@ const AddProduct = () => {
                 placeholder="123456789"
                 value={sku}
                 type="number"
-                onChange={(event) => setSku(event.target.value)}
+                onChange={handleChangeSku}
                 required
               />
             </div>
@@ -178,13 +228,18 @@ const AddProduct = () => {
               <div className="mb-2 block">
                 <Label value="Fecha de vencimiento" />
               </div>
-              <Datepicker
-                language="es-CL"
-                onSelectedDateChanged={handleDateChange}
-              />
-              {/* {selectedDate && (
-                <p>Fecha seleccionada: {selectedDate.toLocaleDateString()}</p>
-              )} */}
+              <div className="flex row justify-between">
+                <Datepicker
+                  language="es-CL"
+                  onSelectedDateChanged={handleDateChange}
+                />
+                <TextInput
+                  id="fecha_vencimiento"
+                  placeholder="sin fecha..."
+                  readOnly
+                  value={inputDate}
+                />
+              </div>
             </div>
 
             <div>

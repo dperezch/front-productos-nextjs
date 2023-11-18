@@ -5,6 +5,8 @@ import SessionAuthProvider from "@/context/SessionAuthProvider";
 import Aside from "@/components/Aside";
 import { ThemeProvider } from "@/context/TemaProvider";
 import { ThemeSwitcher } from "@/components/DarkMode";
+import BadgeContextProvider from "@/context/BadgeContext";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,17 +20,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${inter.className} bg-slate-50 dark:bg-gray-800`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main>
             <SessionAuthProvider>
-              <Aside />
-              <div>
-                <ThemeSwitcher />
-                {children}
-              </div>
+              <BadgeContextProvider>
+                <Aside />
+                <div>
+                  <ThemeSwitcher />
+                  {children}
+                </div>
+              </BadgeContextProvider>
             </SessionAuthProvider>
           </main>
         </ThemeProvider>
