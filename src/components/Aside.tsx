@@ -17,7 +17,7 @@ const Aside = () => {
     setDrawer((current) => !current);
   };
 
-  const badge = useContext(BadgeContext) as any;
+  const {badge} = useContext(BadgeContext) as any;
 
   return (
     <div className={`${session ? "" : "hidden"}`}>
@@ -153,7 +153,12 @@ const Aside = () => {
                   <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Inbox</span>
-                <span className="ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-red-400 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger-700">{badge.badge}</span>
+                {
+                  badge > 0? (
+                    <span className="ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-red-400 dark:text-white px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger-700">{badge}</span>
+                  ) : null
+                }
+                
               </Link>
             </li>
             <li>
