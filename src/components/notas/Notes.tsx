@@ -78,6 +78,9 @@ const Notes = () => {
     localStorage.setItem("notas", JSON.stringify(nuevasTareas));
   };
 
+  // Ordenar el array de tareas, colocando las tareas no completadas al principio
+  const tareasOrdenadas = arrayTareas.sort((a, b) => (a.estado === b.estado ? 0 : a.estado ? 1 : -1));
+
   return (
     <div className="p-5">
       <form onSubmit={agregarTarea} className="mb-5 grid grid-cols-7 gap-4">
@@ -101,7 +104,7 @@ const Notes = () => {
         </div>
       </form>
       {arrayTareas.length > 0 ? (
-        arrayTareas.map((tarea, index) => (
+        tareasOrdenadas.map((tarea, index) => (
           <div
             className="bg-white shadow dark:bg-gray-700 rounded-lg my-4"
             key={index}
@@ -138,8 +141,8 @@ const Notes = () => {
               </div>
               <p
                 className={` ${
-                  tarea.estado ? "line-through" : ""
-                }  font-semibold`}
+                  tarea.estado ? "line-through text-gray-400" : "font-semibold"
+                }`}
               >
                 {" "}
                 {tarea.tarea}{" "}
