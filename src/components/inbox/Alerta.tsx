@@ -1,8 +1,7 @@
 "use client";
-import useFetchDatos from "@/app/hooks/useFetchDatos";
+import { useProductosPorVencer } from "@/app/hooks/useProductosPorVencer";
 import MiniLoading from "../MiniLoading";
-import { useContext, useEffect, useState } from "react";
-import { BadgeContext } from "@/context/BadgeContext";
+import SinAlerta from "../SinAlerta";
 
 export type ProductoVencido = Producto & {
   diasFaltantes: number;
@@ -11,49 +10,14 @@ export type ProductoVencido = Producto & {
 };
 
 const Alerta = () => {
-  const { error, data, isLoading } = useFetchDatos("/productos");
-  const today = new Date();
-  const [productosPorVencer, setProductosPorVencer] = useState<
-    ProductoVencido[]
-  >([]);
-  const { badge, setBadge } = useContext(BadgeContext) as any;
-
-  useEffect(() => {
-    setProductosPorVencer([]);
-    if (data) {
-      data.map((producto: Producto) => {
-        if (producto.fecha_vencimiento) {
-          const fechaVencimiento = new Date(producto.fecha_vencimiento);
-          const diferencia = fechaVencimiento.getTime() - today.getTime();
-          const mseg_dia = 1000 * 60 * 60 * 24;
-          const diasFaltantes = diferencia / mseg_dia;
-          const descuento = producto.precio_venta * 0.8;
-          const descuento2 = producto.precio_venta * 0.9;
-
-          if (diasFaltantes <= 30) {
-            const productoVencido = {
-              ...producto,
-              diasFaltantes,
-              descuento,
-              descuento2,
-            };
-            setProductosPorVencer((prev) => [...prev, productoVencido]);
-          }
-        }
-      });
-
-      setProductosPorVencer((prev) => {
-        setBadge(prev.length);
-        return prev;
-      });
-    }
-  }, [data]);
+  const { error, data, isLoading, productosPorVencer } =
+    useProductosPorVencer();
 
   return (
     <>
       {isLoading ? (
         <MiniLoading />
-      ) : (
+      ) : productosPorVencer.length > 0 ? (
         productosPorVencer.map((producto: ProductoVencido) => {
           if (producto.diasFaltantes <= 15) {
             return (
@@ -74,9 +38,10 @@ const Alerta = () => {
                 <span className="sr-only">Info</span>
                 <div>
                   <span className="font-semibold">Alerta de vencimiento! </span>
-                  Tienes {producto.cantidad} productos de "{producto.nombre}" sku: {producto.sku} que vencen en {" "}
-                  {producto.diasFaltantes.toFixed(0)} días!
-                  , se recomienda vender a ${producto.descuento} como precio oferta.
+                  Tienes {producto.cantidad} productos de "{producto.nombre}"
+                  sku: {producto.sku} que vencen en{" "}
+                  {producto.diasFaltantes.toFixed(0)} días! , se recomienda
+                  vender a ${producto.descuento} como precio oferta.
                 </div>
               </div>
             );
@@ -102,14 +67,17 @@ const Alerta = () => {
                 <span className="sr-only">Info</span>
                 <div>
                   <span className="font-semibold">Alerta de precaución! </span>
-                  Al producto "{producto.nombre}", sku: {producto.sku}, le quedan{" "}
-                  {producto.diasFaltantes.toFixed(0)} días para vencer!, se
-                  recomienda vender a ${producto.descuento2} como precio oferta.
+                  Al producto "{producto.nombre}", sku: {producto.sku}, le
+                  quedan {producto.diasFaltantes.toFixed(0)} días para vencer!,
+                  se recomienda vender a ${producto.descuento2} como precio
+                  oferta.
                 </div>
               </div>
             );
           }
         })
+      ) : (
+        <SinAlerta texto="no hay productos con vencimiento"/>
       )}
     </>
   );

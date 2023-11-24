@@ -15,13 +15,14 @@ const Products = () => {
 
   const addNewProduct = (newProduct: Producto) => {
     const indice = data.findIndex((item: Producto) => {
-      if(item.id === newProduct.id)
-      {return true}
-    })
-    if(indice){
-      data.splice(indice,1,newProduct);
+      if (item.id === newProduct.id) {
+        return true;
+      }
+    });
+    if (indice) {
+      data.splice(indice, 1, newProduct);
       setArrayFiltrado(data);
-      return
+      return;
     }
     setArrayFiltrado([...data, newProduct]);
   };
@@ -31,20 +32,18 @@ const Products = () => {
   }
 
   return (
-    <>
-      <div className="sm:ml-64 mt-14 ">
-        <AddProduct addNewProduct={addNewProduct} data={data} />
-        <Lista
-          error={error}
-          data={data}
-          isLoading={isLoading}
-          arrayFiltrado={arrayFiltrado}
-          setArrayFiltrado={setArrayFiltrado}
-          arrayOrdenado={arrayOrdenado}
-          setArrayOrdenado={setArrayOrdenado}
-        />
-      </div>
-    </>
+    <div className="sm:ml-64 mt-14">
+      <AddProduct addNewProduct={addNewProduct} data={data} />
+      <Lista
+        error={error}
+        data={data}
+        isLoading={isLoading}
+        arrayFiltrado={arrayFiltrado}
+        setArrayFiltrado={setArrayFiltrado}
+        arrayOrdenado={arrayOrdenado}
+        setArrayOrdenado={setArrayOrdenado}
+      />
+    </div>
   );
 };
 

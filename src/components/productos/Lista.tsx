@@ -216,9 +216,9 @@ const Lista = ({error, data, isLoading, arrayFiltrado, setArrayFiltrado, arrayOr
         <MiniLoading />
       ) : (
         <div className="mt-3 ">
-          <div className=" h-screen dark:bg-gray-800 dark:text-gray-400">
+          <div className="  dark:bg-gray-800 dark:text-gray-400">
             <div className="p-5">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th

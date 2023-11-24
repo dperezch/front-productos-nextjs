@@ -17,7 +17,7 @@ const Aside = () => {
     setDrawer((current) => !current);
   };
 
-  const {badge} = useContext(BadgeContext) as any;
+  const { badge } = useContext(BadgeContext) as any;
 
   return (
     <div className={`${session ? "" : "hidden"}`}>
@@ -73,7 +73,13 @@ const Aside = () => {
           </div>
 
           <ul className="space-y-4 font-medium">
-            <li>
+            <li
+              className={`${
+                pathname === "/"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}
+            >
               <Link
                 href="/"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -115,9 +121,15 @@ const Aside = () => {
                 <span className="ml-3">Dashboard</span>
               </Link>
             </li>
-            <li>
+            <li
+              className={`${
+                pathname === "/ventas"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}
+            >
               <Link
-                href="/"
+                href="/ventas"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -129,7 +141,7 @@ const Aside = () => {
                 >
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
                 </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Kanban</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Ventas</span>
               </Link>
             </li>
             <li
@@ -143,39 +155,63 @@ const Aside = () => {
                 href="/inbox"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Inbox</span>
-                {
-                  badge > 0? (
-                    <span className="ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-red-400 dark:text-white px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger-700">{badge}</span>
-                  ) : null
-                }
-                
+                {badge > 0 ? (
+                  <svg
+                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M15.133 10.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.1a1 1 0 0 0-2 0v2.364a.944.944 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C4.867 13.018 3 13.614 3 14.807 3 15.4 3 16 3.538 16h12.924C17 16 17 15.4 17 14.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.39A1.001 1.001 0 1 1 4.854 3.8a7.431 7.431 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 15.146 3.8a1 1 0 0 1 1.471-1.354 9.425 9.425 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM6.823 17a3.453 3.453 0 0 0 6.354 0H6.823Z" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 14 20"
+                  >
+                    <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
+                  </svg>
+                )}
+
+                <span className="flex-1 ml-3 whitespace-nowrap">
+                  Vencimientos
+                </span>
+                {badge > 0 ? (
+                  <span className="ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-red-400 dark:text-white px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger-700">
+                    {badge}
+                  </span>
+                ) : null}
               </Link>
             </li>
-            <li>
+            <li className={`${
+                pathname === "/notas"
+                  ? "border-r-8 dark:border-slate-50 border-gray-700"
+                  : ""
+              }`}>
               <Link
-                href="/"
+                href="/notas"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-slate-300 hover:dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
                   className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  viewBox="0 0 20 18"
+                  viewBox="0 0 24 24"
+                  xmlSpace="preserve"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
                 >
-                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                  <g id="info" />
+                  <g id="icons">
+                    <g id="new">
+                      <path d="M17.5,8C16.1,8,15,6.9,15,5.5V2c0-0.6-0.4-1-1-1H6C3.8,1,2,2.8,2,5v14c0,2.2,1.8,4,4,4h12c2.2,0,4-1.8,4-4V9    c0-0.6-0.4-1-1-1H17.5z M14,17H8c-0.6,0-1-0.4-1-1c0-0.6,0.4-1,1-1h6c0.6,0,1,0.4,1,1C15,16.6,14.6,17,14,17z M16,13H8    c-0.6,0-1-0.4-1-1c0-0.6,0.4-1,1-1h8c0.6,0,1,0.4,1,1C17,12.6,16.6,13,16,13z" />
+                    </g>
+                  </g>
                 </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Notas</span>
               </Link>
             </li>
             <li

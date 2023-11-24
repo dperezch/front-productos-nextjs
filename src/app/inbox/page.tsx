@@ -5,7 +5,6 @@ const InboxPage = () => {
   return (
     <div className="sm:ml-64 mt-14">
       <Alerta />
-      
     </div>
   );
 };
